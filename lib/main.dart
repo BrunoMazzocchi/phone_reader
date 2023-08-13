@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:phone_reader/config/features/home/view/view.dart';
+import 'package:phone_reader/features/home/view/view.dart';
 import 'package:phone_reader/config/icons/icons.dart';
 import 'package:phone_reader/config/theme/light_theme.dart';
 

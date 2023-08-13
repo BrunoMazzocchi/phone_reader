@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phone_reader/config/features/home/widgets/news_card.dart';
+import 'package:phone_reader/features/home/widgets/news_card.dart';
 
 class NewsList extends StatelessWidget {
   const NewsList({
