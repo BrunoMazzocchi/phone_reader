@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phone_reader/config/icons/icons.dart';
 import 'package:phone_reader/config/theme/light_theme.dart';
-import 'package:phone_reader/features/post/view.dart';
+import 'package:phone_reader/features/post/view/view.dart';
 
 /// A widget that displays a news card with an image, title, author, category, and time.
 class NewsCard extends StatelessWidget {
