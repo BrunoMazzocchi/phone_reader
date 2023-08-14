@@ -5,4 +5,5 @@ final class CustomIcons {
   static const IconData newsMenu = IconData(0xe919, fontFamily: 'icomoon');
   static const IconData bottomNavBarHomeActive = IconData(0xe923, fontFamily: 'icomoon');
   static const IconData bottomNavBarHomeInactive = IconData(0xe91b, fontFamily: 'icomoon');
+  static const IconData commentIcon = IconData(0xe904, fontFamily: 'icomoon');
 }

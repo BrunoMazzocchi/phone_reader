@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:phone_reader/config/routes/routes.dart';
 import 'package:phone_reader/features/home/view/view.dart';
 import 'package:phone_reader/config/icons/icons.dart';
 import 'package:phone_reader/config/theme/light_theme.dart';
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Phone Reader',
       theme: LightTheme().getLightTheme(),
+      routes: appRoutes,
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -88,6 +90,7 @@ class MyApp extends StatelessWidget {
             statusBarIconBrightness: Brightness.dark,
           ),
         ),
+
         body: const HomeView(),
         bottomNavigationBar: bottomNavigationBar,
       ),
