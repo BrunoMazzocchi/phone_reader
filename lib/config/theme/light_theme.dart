@@ -7,6 +7,8 @@ class LightTheme {
   static const Color backgroundColor = Color(0xFFEFEFEF);
   static const Color categoryColor = Color(0xFF69BDFD);
   static const Color greenBackground = Color(0xFFF6F7F5);
+  static const Color lightGrey = Color(0xFFFEEEEEE);
+  static const Color grey = Color(0xFFF909090);
   /// Getter to get the light theme
   ThemeData getLightTheme() => ThemeData(
         primaryColor: primaryColor,
