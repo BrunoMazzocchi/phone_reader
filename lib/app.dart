@@ -7,6 +7,7 @@ import 'package:phone_reader/config/theme/light_theme.dart';
 import 'package:phone_reader/features/bookmark/view/view.dart';
 import 'package:phone_reader/features/home/view/view.dart';
 import 'package:phone_reader/features/search/view/view.dart';
+import 'package:phone_reader/features/settings/view/view.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -22,6 +23,7 @@ class _AppState extends State<App> {
     const HomeView(),
     const SearchView(),
     const BookmarkView(),
+    const SettingsView(), 
   ];
 
   @override
