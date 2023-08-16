@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:phone_reader/config/icons/icons.dart';
 import 'package:phone_reader/config/routes/routes.dart';
 import 'package:phone_reader/config/theme/light_theme.dart';
+import 'package:phone_reader/features/bookmark/view/view.dart';
 import 'package:phone_reader/features/home/view/view.dart';
 import 'package:phone_reader/features/search/view/view.dart';
 
@@ -20,6 +21,7 @@ class _AppState extends State<App> {
   List pages = [
     const HomeView(),
     const SearchView(),
+    const BookmarkView(),
   ];
 
   @override
