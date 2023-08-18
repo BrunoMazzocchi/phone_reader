@@ -1,29 +1,72 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:phone_reader/config/icons/icons.dart';
 import 'package:phone_reader/config/routes/routes.dart';
 import 'package:phone_reader/config/theme/light_theme.dart';
+import 'package:phone_reader/data/datasources/remote/remote_category_data_source.dart';
+import 'package:phone_reader/data/repositories/category_repository.dart';
 import 'package:phone_reader/features/bookmark/view/view.dart';
+import 'package:phone_reader/features/home/bloc/home_bloc.dart';
 import 'package:phone_reader/features/home/view/view.dart';
 import 'package:phone_reader/features/search/view/view.dart';
 import 'package:phone_reader/features/settings/view/view.dart';
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({super.key});
 
   @override
-  State<App> createState() => _AppState();
+  Widget build(BuildContext context) {
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (_) => CategoryRepository(
+            remoteDataSource: CategoryRemoteDataSource(
+              client: Dio(),
+            ),
+          ),
+        ),
+      ],
+      child: const _AppBloc(),
+    );
+  }
 }
 
-class _AppState extends State<App> {
+class _AppBloc extends StatelessWidget {
+  const _AppBloc({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => HomeBloc(
+            context.read<CategoryRepository>(),
+          )..add(HomeLoadedEvent()),
+        ),
+      ],
+      child: const _AppCore(),
+    );
+  }
+}
+
+class _AppCore extends StatefulWidget {
+  const _AppCore({super.key});
+
+  @override
+  State<_AppCore> createState() => _AppCoreState();
+}
+
+class _AppCoreState extends State<_AppCore> {
   int currentIndex = 0;
 
   List pages = [
     const HomeView(),
     const SearchView(),
     const BookmarkView(),
-    const SettingsView(), 
+    const SettingsView(),
   ];
 
   @override

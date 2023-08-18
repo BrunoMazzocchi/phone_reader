@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phone_reader/features/home/bloc/home_bloc.dart';
 import 'package:phone_reader/features/home/widgets/news_category.dart';
 
 class CategoriesList extends StatelessWidget {
@@ -15,20 +16,26 @@ class CategoriesList extends StatelessWidget {
       ),
       child: SizedBox(
         height: 25,
-        child: ListView(
-          padding: const EdgeInsets.only(
-            left: 11,
-          ),
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          children: const [
-            NewsCategory(category: 'For you', isSelected: true),
-            NewsCategory(category: 'Top', isSelected: false),
-            NewsCategory(category: 'World', isSelected: false),
-            NewsCategory(category: 'Politics', isSelected: false),
-            NewsCategory(category: 'Enterteinment', isSelected: false),
-          ],
+        child: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
+            if (state is HomeLoaded) {
+              return ListView.builder(
+                padding: const EdgeInsets.only(
+                  left: 11,
+                ),
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: state.categories.length,
+                itemBuilder: (context, index) {
+                return NewsCategory(
+                  isSelected: false,
+                  category: state.categories[index].name,
+                );
+              });
+            }
+            return const SizedBox();
+          },
         ),
       ),
     );
