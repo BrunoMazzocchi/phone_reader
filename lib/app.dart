@@ -6,29 +6,49 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:phone_reader/config/icons/icons.dart';
 import 'package:phone_reader/config/routes/routes.dart';
 import 'package:phone_reader/config/theme/light_theme.dart';
+import 'package:phone_reader/data/datasources/remote/remote_auth_data_source.dart';
 import 'package:phone_reader/data/datasources/remote/remote_category_data_source.dart';
+import 'package:phone_reader/data/repositories/auth_repository.dart';
 import 'package:phone_reader/data/repositories/category_repository.dart';
 import 'package:phone_reader/features/bookmark/view/view.dart';
 import 'package:phone_reader/features/home/bloc/home_bloc.dart';
 import 'package:phone_reader/features/home/view/view.dart';
+import 'package:phone_reader/features/login/bloc/login_bloc.dart';
 import 'package:phone_reader/features/login/view/view.dart';
 import 'package:phone_reader/features/search/view/view.dart';
 import 'package:phone_reader/features/settings/view/view.dart';
+import 'package:phone_reader/utils/interceptors/refresh_token_interceptor.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final client = Dio(
+      BaseOptions(
+        baseUrl: "http://192.168.1.9:8080/api",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      ),
+    );
+
+    client.interceptors.add(RefreshTokenInterceptor(client));
+
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
           create: (_) => CategoryRepository(
             remoteDataSource: CategoryRemoteDataSource(
-              client: Dio(),
+              client: client,
             ),
           ),
         ),
+        RepositoryProvider(
+          create: (_) => AuthRepository(
+            remoteDataSource: AuthRemoteDataSource(client: client),
+          ),
+        )
       ],
       child: const _AppBloc(),
     );
@@ -47,15 +67,17 @@ class _AppBloc extends StatelessWidget {
             context.read<CategoryRepository>(),
           )..add(HomeLoadedEvent()),
         ),
+        BlocProvider(
+          create: (_) => LoginBloc(context.read<AuthRepository>())
+            ..add(LoginInitialEvent()),
+        ),
       ],
-      child: const _AppCore(),
+      child: _AppCore(),
     );
   }
 }
 
 class _AppCore extends StatefulWidget {
-  const _AppCore({super.key});
-
   @override
   State<_AppCore> createState() => _AppCoreState();
 }
@@ -130,7 +152,32 @@ class _AppCoreState extends State<_AppCore> {
       title: 'Phone Reader',
       theme: LightTheme().getLightTheme(),
       routes: appRoutes,
-      home: Login()
+      home: context.watch<LoginBloc>().state is LoginNeeded
+          ? const Login()
+          : Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                centerTitle: true,
+                title: title,
+                actions: const [
+                  Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: Icon(
+                      Icons.notifications_outlined,
+                      color: LightTheme.primaryColor,
+                      size: 24,
+                    ),
+                  )
+                ],
+                elevation: 0,
+                systemOverlayStyle: const SystemUiOverlayStyle(
+                  statusBarColor: Colors.transparent,
+                  statusBarIconBrightness: Brightness.dark,
+                ),
+              ),
+              body: pages[currentIndex],
+              bottomNavigationBar: bottomNavigationBar,
+            ),
     );
   }
 }

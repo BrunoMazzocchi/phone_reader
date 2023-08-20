@@ -18,7 +18,7 @@ class CategoryRemoteDataSource implements IRemoteCategoriesDataSource {
   @override
   Future<List<CategoryModel>> getCategories() async {
     try {
-      final response = await _client.get('http://192.168.1.9:8080/categories/all');
+      final response = await _client.get('${_client.options.baseUrl}/categories/all');
       if(response.statusCode != 200) {
       
         throw Exception();
