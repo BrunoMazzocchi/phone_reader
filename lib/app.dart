@@ -11,6 +11,7 @@ import 'package:phone_reader/data/repositories/category_repository.dart';
 import 'package:phone_reader/features/bookmark/view/view.dart';
 import 'package:phone_reader/features/home/bloc/home_bloc.dart';
 import 'package:phone_reader/features/home/view/view.dart';
+import 'package:phone_reader/features/login/view/view.dart';
 import 'package:phone_reader/features/search/view/view.dart';
 import 'package:phone_reader/features/settings/view/view.dart';
 
@@ -129,30 +130,7 @@ class _AppCoreState extends State<_AppCore> {
       title: 'Phone Reader',
       theme: LightTheme().getLightTheme(),
       routes: appRoutes,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          title: title,
-          actions: const [
-            Padding(
-              padding: EdgeInsets.only(right: 16),
-              child: Icon(
-                Icons.notifications_outlined,
-                color: LightTheme.primaryColor,
-                size: 24,
-              ),
-            )
-          ],
-          elevation: 0,
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.dark,
-          ),
-        ),
-        body: pages[currentIndex],
-        bottomNavigationBar: bottomNavigationBar,
-      ),
+      home: Login()
     );
   }
 }
