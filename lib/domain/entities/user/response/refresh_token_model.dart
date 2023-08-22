@@ -3,12 +3,14 @@ class RefreshTokenModel {
   String refreshToken;
   String tokenType;
   int id;
+  bool? isSelected; 
 
   RefreshTokenModel({
     required this.accessToken,
     required this.refreshToken,
     required this.tokenType,
     required this.id,
+    this.isSelected,
   });
 
   factory RefreshTokenModel.fromJson(Map<String, dynamic> json) =>

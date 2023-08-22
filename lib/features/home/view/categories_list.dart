@@ -28,9 +28,21 @@ class CategoriesList extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: state.categories.length,
                 itemBuilder: (context, index) {
-                return NewsCategory(
-                  isSelected: false,
-                  category: state.categories[index].name,
+                return GestureDetector(
+                  onTap: () {
+                   
+                    context.read<HomeBloc>().add(
+                          HomeCategorySelectedEvent(
+                            categoryId: state.categories[index].id,
+                            categories: state.categories,
+                          ),
+                        );
+
+                  },
+                  child: NewsCategory(
+                    isSelected: state.categories[index].isSelected,
+                    category: state.categories[index].name,
+                  ),
                 );
               });
             }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'package:phone_reader/data/repositories/category_repository.dart';
 import 'package:phone_reader/domain/entities/category/response/category_model.dart';
@@ -13,7 +14,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     on<HomeLoadedEvent>(_loadHomePage);
 
-    on<ChangeCategoryEvent>(_changeCategorySelected); 
+    on<HomeCategorySelectedEvent>(_changeCategorySelected);
   }
 
   void _loadHomePage(HomeLoadedEvent event, Emitter<HomeState> emit) async {
@@ -27,9 +28,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _changeCategorySelected(
-      ChangeCategoryEvent event, Emitter<HomeState> emit) async {
+      HomeCategorySelectedEvent event, Emitter<HomeState> emit) async {
     emit(HomeLoading());
     try {
+      final categories = event.categories;
+      final newCategories = categories.map((e) {
+        if (e.id == event.categoryId) {
+          return e.copyWith(isSelected: true);
+        }
+        return e.copyWith(isSelected: false);
+      }).toList();
+      emit(HomeLoaded(categories: newCategories));
     } catch (e) {
       emit(HomeError());
     }
